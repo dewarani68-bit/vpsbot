@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YUSUP AI TOOLS — Tools Gratis, Chat Publik & Music Room</title>
+<meta name="description" content="YUSUP AI TOOLS: kumpulan tools gratis, generator teks keren, chat publik, dan music room bareng.">
+<meta name="theme-color" content="#F4EFE4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{
+  --paper:#F4EFE4;
+  --surface:#FFFdf8;
+  --ink:#1C2320;
+  --muted:#636A65;
+  --line:#D9D0BD;
+  --teal:#0E6B5C;
+  --teal-soft:#DCEBE6;
+  --orange:#E9692C;
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.6;
+}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+
+/* sidebar */
+aside{
+  border-right:1px solid var(--line);
+  padding:28px 20px;
+  position:sticky;top:0;height:100vh;overflow:auto;
+}
+.brand{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:1.6rem;margin:0 0 2px;line-height:1.1}
+.tag{color:var(--muted);margin:0 0 24px;font-size:.92rem}
+nav{display:flex;flex-direction:column;gap:2px}
+nav button{
+  all:unset;
+  cursor:pointer;
+  padding:9px 12px;
+  border-radius:8px;
+  color:var(--ink);
+  font-size:.97rem;
+}
+nav button:hover{background:var(--teal-soft)}
+nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+/* main */
+main{padding:44px clamp(20px,5vw,64px);max-width:820px;width:100%}
+h1{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:800;
+  font-size:clamp(1.9rem,4vw,2.6rem);
+  line-height:1.1;
+  margin:0 0 8px;
+}
+.desc{color:var(--muted);margin:0 0 24px;max-width:60ch}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:24px;
+}
+label{display:block;font-weight:500;margin-bottom:6px;font-size:.92rem}
+input,select,textarea{
+  width:100%;
+  font:inherit;
+  color:var(--ink);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:10px 12px;
+}
+textarea{min-height:140px;resize:vertical}
+input[type="range"]{padding:0;accent-color:var(--teal)}
+input[type="checkbox"]{width:auto;accent-color:var(--teal)}
+.stack > * + *{margin-top:16px}
+.row{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.checks{display:flex;flex-wrap:wrap;gap:12px 20px;margin-top:16px}
+.checks label{display:flex;align-items:center;gap:8px;font-weight:400;margin:0}
+.result{
+  font-family:"Fraunces",Georgia,serif;
+  font-size:clamp(1.5rem,3vw,2rem);
+  font-weight:600;
+  margin:20px 0 0;
+  word-break:break-word;
+}
+.sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{
+  background:var(--teal);color:#fff;border:0;border-radius:8px;
+  padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;
+}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--teal-soft);filter:none}
+.list{list-style:none;padding:0;margin:20px 0 0}
+.list li{
+  display:flex;justify-content:space-between;gap:16px;
+  padding:11px 0;border-bottom:1px solid var(--line);
+}
+.list li:last-child{border-bottom:0}
+.list strong{font-weight:600;text-align:right;word-break:break-all}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:20px}
+.stat{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:#fff}
+.stat span{display:block;color:var(--muted);font-size:.88rem}
+.stat b{display:block;font-family:"Fraunces",Georgia,serif;font-size:1.6rem;font-weight:600}
+.foot{margin-top:40px;color:var(--muted);font-size:.85rem}
+
+.frow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:0}
+.frow .txt{flex:1;font-size:1.1rem;word-break:break-word;min-width:0}
+.frow small{display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+.frow .btn{flex-shrink:0;padding:8px 12px}
+
+/* ===== efek 3D, loader, chat, music, statistik ===== */
+.wrap{position:relative;z-index:1}
+.bg3d{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;perspective:1200px}
+.bg3d span{
+  position:absolute;width:180px;height:180px;
+  border:2px solid rgba(14,107,92,.2);border-radius:24px;
+  animation:float3d 18s linear infinite;
+}
+.bg3d span:nth-child(1){top:8%;left:70%}
+.bg3d span:nth-child(2){top:60%;left:4%;width:120px;height:120px;border-color:rgba(233,105,44,.25);animation-duration:24s;animation-direction:reverse}
+.bg3d span:nth-child(3){top:30%;left:40%;width:90px;height:90px;animation-duration:14s}
+@keyframes float3d{
+  from{transform:translateZ(-200px) rotateX(0) rotateY(0)}
+  50%{transform:translateZ(120px) rotateX(180deg) rotateY(90deg)}
+  to{transform:translateZ(-200px) rotateX(360deg) rotateY(360deg)}
+}
+
+.scene{perspective:700px;width:120px;height:120px;margin:12px auto 24px}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:spin3d 9s linear infinite}
+.cube i{position:absolute;inset:0;border:2px solid var(--teal);background:rgba(14,107,92,.12);border-radius:8px}
+.cube .f1{transform:translateZ(60px)}
+.cube .f2{transform:rotateY(90deg) translateZ(60px)}
+.cube .f3{transform:rotateY(180deg) translateZ(60px)}
+.cube .f4{transform:rotateY(-90deg) translateZ(60px)}
+.cube .f5{transform:rotateX(90deg) translateZ(60px)}
+.cube .f6{transform:rotateX(-90deg) translateZ(60px)}
+@keyframes spin3d{from{transform:rotateX(-20deg) rotateY(0)}to{transform:rotateX(-20deg) rotateY(360deg)}}
+
+.card,.tilt{transition:transform .25s ease-out}
+
+.loader{
+  position:fixed;inset:0;z-index:999;background:var(--paper);
+  display:grid;place-content:center;justify-items:center;text-align:center;
+  transition:opacity .45s ease,visibility .45s;
+}
+.loader.hide{opacity:0;visibility:hidden}
+.loader .scene{transform:scale(.8);margin:0 auto 10px}
+#loader-text{font-family:"Fraunces",Georgia,serif;font-size:1.3rem;font-weight:600;margin:0}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;z-index:1000;
+  transform:translate(-50%,160%);transition:transform .3s ease;
+  background:var(--ink);color:var(--paper);
+  padding:10px 16px;border-radius:999px;
+  display:flex;align-items:center;gap:10px;font-size:.92rem;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  max-width:calc(100vw - 32px);
+}
+.toast.show{transform:translate(-50%,0)}
+.spin{
+  width:14px;height:14px;flex-shrink:0;display:inline-block;
+  border:2px solid rgba(255,255,255,.3);border-top-color:var(--orange);
+  border-radius:50%;animation:rot .7s linear infinite;
+}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.hero{text-align:center;padding:4px 0}
+.brand-big{
+  font-family:"Fraunces",Georgia,serif;font-weight:800;
+  font-size:clamp(1.8rem,5vw,2.8rem);margin:0;line-height:1.1;
+  text-shadow:0 2px 0 var(--line),0 6px 0 rgba(28,35,32,.12);
+}
+.link-cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;margin-top:28px;text-align:left;
+}
+.link-card{
+  display:block;color:var(--ink);text-decoration:none;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;
+}
+.link-card b{display:block;font-family:"Fraunces",Georgia,serif;font-size:1.15rem;margin-bottom:4px}
+.link-card span{color:var(--muted);font-size:.92rem}
+
+.side-stats{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.side-stats .cell{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface)}
+.side-stats .cell.up{grid-column:1/-1}
+.side-stats span{display:block;color:var(--muted);font-size:.78rem}
+.side-stats b{font-family:"Fraunces",Georgia,serif;font-size:1.1rem;font-weight:600;word-break:break-all}
+.conn{grid-column:1/-1;font-size:.82rem;color:var(--muted);text-align:center;margin:2px 0 0}
+.conn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--orange);margin-right:6px}
+.conn[data-ok="true"]::before{background:var(--teal)}
+
+.chat-log{
+  height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px;
+  padding:14px;background:#fff;display:flex;flex-direction:column;gap:10px;
+}
+.msg{max-width:85%;background:var(--paper);border-radius:12px;padding:8px 12px;align-self:flex-start}
+.msg.me{align-self:flex-end;background:var(--teal-soft)}
+.msg b{font-size:.9rem;margin-right:8px}
+.msg .when{color:var(--muted);font-size:.75rem}
+.msg p{margin:2px 0 0;word-break:break-word}
+.chat-form{display:grid;grid-template-columns:150px 1fr auto;gap:8px;margin-top:12px}
+.chat-form input{width:100%}
+@media (max-width:600px){
+  .chat-form{grid-template-columns:1fr}
+}
+
+.now{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.disc{
+  width:84px;height:84px;border-radius:50%;flex-shrink:0;
+  background:repeating-radial-gradient(circle,#1c2320 0 3px,#2b332f 3px 4px);
+  border:6px solid var(--ink);
+  animation:rot 6s linear infinite;animation-play-state:paused;
+}
+.disc.on{animation-play-state:running}
+.now small{color:var(--muted)}
+
+/* mobile */
+@media (max-width:800px){
+  .wrap{grid-template-columns:1fr}
+  aside{
+    position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);
+    padding:18px 16px 14px;
+  }
+  .tag{margin-bottom:14px}
+  nav{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  nav button{white-space:nowrap;background:var(--surface);border:1px solid var(--line);padding:7px 12px}
+  nav button[aria-current="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  main{padding:28px 16px 40px}
+  .card{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="bg3d" aria-hidden="true"><span></span><span></span><span></span></div>
+<div id="loader" class="loader" role="status" aria-live="polite">
+  <div class="scene"><div class="cube"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i><i class="f6"></i></div></div>
+  <p id="loader-text">Loading...</p>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<audio id="gplayer" preload="auto"></audio>
+<div class="wrap">
+  <aside>
+    <p class="brand">YUSUP AI TOOLS</p>
+    <p class="tag">Tools online gratis, langsung di browser.</p>
+    <nav id="nav" aria-label="Daftar tools"></nav>
+    <div class="side-stats">
+      <div class="cell"><span>Online</span><b id="st-online">—</b></div>
+      <div class="cell"><span>Offline</span><b id="st-offline">—</b></div>
+      <div class="cell"><span>Total user</span><b id="st-total">—</b></div>
+      <div class="cell up"><span>Uptime</span><b id="st-uptime">—</b></div>
+      <p class="conn" id="st-conn" data-ok="false">Menghubungkan...</p>
+    </div>
+  </aside>
+  <main id="view" tabindex="-1"></main>
+</div>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n).toLocaleString('id-ID', { maximumFractionDigits: 6 });
+function flash(btn, msg){
+  const old = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(() => btn.textContent = old, 1400);
+}
+async function copyText(text, btn){
+  try { await navigator.clipboard.writeText(text); flash(btn, 'Tersalin'); }
+  catch { flash(btn, 'Gagal, salin manual'); }
+}
+function randInt(n){
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0] % n;
+}
+
+/* ---------- konverter generik ---------- */
+function makeConverter(id, name, desc, units){
+  return {
+    id, name, desc,
+    html: `
+      <div class="row">
+        <div><label for="${id}-v">Nilai</label><input id="${id}-v" type="number" value="1" step="any"></div>
+        <div><label for="${id}-u">Dari satuan</label>
+          <select id="${id}-u">${units.map(u => `<option value="${u[0]}">${u[1]}</option>`).join('')}</select>
+        </div>
+      </div>
+      <ul class="list" id="${id}-o"></ul>`,
+    init(){
+      const v = $('#' + id + '-v'), u = $('#' + id + '-u'), o = $('#' + id + '-o');
+      const run = () => {
+        const val = parseFloat(v.value);
+        if (isNaN(val)) { o.innerHTML = '<li>Masukkan angka dulu.</li>'; return; }
+        const from = units.find(x => x[0] === u.value);
+        const base = val * from[2];
+        o.innerHTML = units.map(x => `<li><span>${esc(x[1])}</span><strong>${fmt(base / x[2])}</strong></li>`).join('');
+      };
+      v.addEventListener('input', run);
+      u.addEventListener('change', run);
+      run();
+    }
+  };
+}
+
+const tools = [
+
+  /* 0. Generator teks keren */
+  {
+    id: 'fancy', name: 'Generator teks keren', desc: 'Ketik teks, pilih gaya hurufnya, lalu salin. Cocok untuk bio, caption, dan nama di medsos atau game.',
+    html: `
+      <label for="fc-in">Teks kamu</label>
+      <input id="fc-in" value="Halo Dunia" autocomplete="off">
+      <div id="fc-list" style="margin-top:12px"></div>`,
+    init(){
+      const map = (t, up, lo, dg, ex = {}, pre = x => x) => {
+        let o = '';
+        for (const ch of pre(t)) {
+          if (ex[ch]) { o += ex[ch]; continue; }
+          const c = ch.codePointAt(0);
+          if (up != null && c >= 65 && c <= 90) o += String.fromCodePoint(up + c - 65);
+          else if (lo != null && c >= 97 && c <= 122) o += String.fromCodePoint(lo + c - 97);
+          else if (dg != null && c >= 48 && c <= 57) o += String.fromCodePoint(dg + c - 48);
+          else o += ch;
+        }
+        return o;
+      };
+      const comb = m => t => [...t].map(c => c === ' ' ? c : c + m).join('');
+      const SCR = {B:'ℬ',E:'ℰ',F:'ℱ',H:'ℋ',I:'ℐ',L:'ℒ',M:'ℳ',R:'ℛ',e:'ℯ',g:'ℊ',o:'ℴ'};
+      const FRK = {C:'ℭ',H:'ℌ',I:'ℑ',R:'ℜ',Z:'ℨ'};
+      const DS  = {C:'ℂ',H:'ℍ',N:'ℕ',P:'ℙ',Q:'ℚ',R:'ℝ',Z:'ℤ'};
+      const CIRC = {'0':'⓪'};
+      for (let d = 1; d <= 9; d++) CIRC[d] = String.fromCodePoint(0x2460 + d - 1);
+      const SC = {};
+      [...'abcdefghijklmnopqrstuvwxyz'].forEach((c, k) => SC[c] = [...'ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘqʀꜱᴛᴜᴠᴡxʏᴢ'][k]);
+      const UD = {a:'ɐ',b:'q',c:'ɔ',d:'p',e:'ǝ',f:'ɟ',g:'ƃ',h:'ɥ',i:'ı',j:'ɾ',k:'ʞ',l:'l',m:'ɯ',n:'u',o:'o',p:'d',q:'b',r:'ɹ',s:'s',t:'ʇ',u:'n',v:'ʌ',w:'ʍ',x:'x',y:'ʎ',z:'z'};
+      const STYLES = [
+        ['Tebal serif',       t => map(t, 0x1D400, 0x1D41A, 0x1D7CE)],
+        ['Miring',            t => map(t, 0x1D434, 0x1D44E, null, {h:'ℎ'})],
+        ['Tebal miring',      t => map(t, 0x1D468, 0x1D482, null)],
+        ['Script',            t => map(t, 0x1D49C, 0x1D4B6, null, SCR)],
+        ['Script tebal',      t => map(t, 0x1D4D0, 0x1D4EA, null)],
+        ['Fraktur',           t => map(t, 0x1D504, 0x1D51E, null, FRK)],
+        ['Fraktur tebal',     t => map(t, 0x1D56C, 0x1D586, null)],
+        ['Double-struck',     t => map(t, 0x1D538, 0x1D552, 0x1D7D8, DS)],
+        ['Sans',              t => map(t, 0x1D5A0, 0x1D5BA, 0x1D7E2)],
+        ['Sans tebal',        t => map(t, 0x1D5D4, 0x1D5EE, 0x1D7EC)],
+        ['Sans miring',       t => map(t, 0x1D608, 0x1D622, null)],
+        ['Monospace',         t => map(t, 0x1D670, 0x1D68A, 0x1D7F6)],
+        ['Lingkaran',         t => map(t, 0x24B6, 0x24D0, null, CIRC)],
+        ['Lingkaran hitam',   t => map(t, 0x1F150, null, null, {}, x => x.toUpperCase())],
+        ['Persegi',           t => map(t, 0x1F130, null, null, {}, x => x.toUpperCase())],
+        ['Lebar (fullwidth)', t => map(t, 0xFF21, 0xFF41, 0xFF10, {' ': '\u3000'})],
+        ['Huruf kecil kapital', t => map(t, null, null, null, SC, x => x.toLowerCase())],
+        ['Coret',             comb('\u0336')],
+        ['Garis bawah',       comb('\u0332')],
+        ['Garis miring',      comb('\u0338')],
+        ['Terbalik',          t => [...t.toLowerCase()].reverse().map(c => UD[c] || c).join('')]
+      ];
+      let cur = [];
+      const list = $('#fc-list'), i = $('#fc-in');
+      const render = () => {
+        cur = STYLES.map(([name, fn]) => ({ name, out: fn(i.value) }));
+        list.innerHTML = cur.map((r, k) =>
+          `<div class="frow"><div class="txt"><small>${esc(r.name)}</small>${esc(r.out)}</div><button class="btn ghost" data-k="${k}">Salin</button></div>`
+        ).join('');
+      };
+      list.addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (b) copyText(cur[b.dataset.k].out, b);
+      });
+      i.addEventListener('input', render);
+      render();
+    }
+  },
+
+  /* 1. Kalkulator */
+  {
+    id: 'kalkulator', name: 'Kalkulator', desc: 'Tulis ekspresi hitung, hasilnya langsung muncul. Mendukung + − × ÷, kurung, dan persen.',
+    html: `
+      <label for="expr">Ekspresi</label>
+      <input id="expr" placeholder="contoh: (12 + 8) * 3.5" autocomplete="off">
+      <p class="result" id="expr-out">—</p>`,
+    init(){
+      const i = $('#expr'), o = $('#expr-out');
+      i.addEventListener('input', () => {
+        const v = i.value.trim();
+        if (!v) { o.textContent = '—'; return; }
+        if (!/^[0-9+\-*/().%\s]+$/.test(v)) { o.textContent = 'Hanya boleh angka dan + − * / ( ) %'; return; }
+        try {
+          const r = Function('"use strict";return (' + v.replace(/%/g, '/100') + ')')();
+          o.textContent = Number.isFinite(r) ? fmt(r) : 'Hasil tidak valid';
+        } catch {
+          o.textContent = 'Ekspresi belum lengkap';
+        }
+      });
+      i.focus();
+    }
+  },
+
+  /* 2. Konverter panjang */
+  makeConverter('panjang', 'Konverter panjang', 'Ubah satuan panjang. Hasil untuk semua satuan muncul sekaligus.', [
+    ['mm', 'Milimeter (mm)', 0.001],
+    ['cm', 'Sentimeter (cm)', 0.01],
+    ['m', 'Meter (m)', 1],
+    ['km', 'Kilometer (km)', 1000],
+    ['inci', 'Inci (in)', 0.0254],
+    ['kaki', 'Kaki (ft)', 0.3048],
+    ['yard', 'Yard (yd)', 0.9144],
+    ['mil', 'Mil (mi)', 1609.344],
+  ]),
+
+  /* 3. Konverter berat */
+  makeConverter('berat', 'Konverter berat', 'Ubah satuan berat, dari miligram sampai ton.', [
+    ['mg', 'Miligram (mg)', 0.000001],
+    ['g', 'Gram (g)', 0.001],
+    ['kg', 'Kilogram (kg)', 1],
+    ['ons', 'Ons (100 g)', 0.1],
+    ['pon', 'Pon (lb)', 0.45359237],
+    ['ton', 'Ton (1.000 kg)', 1000],
+  ]),
+
+  /* 4. Konverter suhu */
+  {
+    id: 'suhu', name: 'Konverter suhu', desc: 'Ubah antara Celsius, Fahrenheit, dan Kelvin.',
+    html: `
+      <div class="row">
+        <div><label for="suhu-v">Nilai</label><input id="suhu-v" type="number" value="25" step="any"></div>
+        <div><label for="suhu-u">Dari satuan</label>
+          <select id="suhu-u"><option value="C">Celsius (°C)</option><option value="F">Fahrenheit (°F)</option><option value="K">Kelvin (K)</option></select>
+        </div>
+      </div>
+      <ul class="list" id="suhu-o"></ul>`,
+    init(){
+      const v = $('#suhu-v'), u = $('#suhu-u'), o = $('#suhu-o');
+      const run = () => {
+        const val = parseFloat(v.value);
+        if (isNaN(val)) { o.innerHTML = '<li>Masukkan angka dulu.</li>'; return; }
+        let c;
+        if (u.value === 'C') c = val;
+        else if (u.value === 'F') c = (val - 32) * 5 / 9;
+        else c = val - 273.15;
+        o.innerHTML = `
+          <li><span>Celsius</span><strong>${fmt(c)} °C</strong></li>
+          <li><span>Fahrenheit</span><strong>${fmt(c * 9 / 5 + 32)} °F</strong></li>
+          <li><span>Kelvin</span><strong>${fmt(c + 273.15)} K</strong></li>`;
+      };
+      v.addEventListener('input', run);
+      u.addEventListener('change', run);
+      run();
+    }
+  },
+
+  /* 5. Penghitung kata */
+  {
+    id: 'kata', name: 'Penghitung kata', desc: 'Hitung kata, karakter, kalimat, dan estimasi waktu baca. Cocok untuk tugas dan artikel.',
+    html: `
+      <label for="kata-in">Teks</label>
+      <textarea id="kata-in" placeholder="Tempel atau ketik teks di sini..."></textarea>
+      <div class="stats" id="kata-out"></div>`,
+    init(){
+      const i = $('#kata-in'), o = $('#kata-out');
+      const run = () => {
+        const t = i.value;
+        const kata = t.trim() ? t.trim().split(/\s+/).length : 0;
+        const kar = t.length;
+        const karTanpa = t.replace(/\s/g, '').length;
+        const kalimat = t.split(/[.!?]+/).filter(s => s.trim()).length;
+        const paragraf = t.split(/\n\s*\n/).filter(p => p.trim()).length;
+        const menit = kata === 0 ? '0 menit' : kata < 200 ? '< 1 menit' : Math.ceil(kata / 200) + ' menit';
+        const stat = (label, val) => `<div class="stat"><span>${label}</span><b>${fmt(val)}</b></div>`;
+        o.innerHTML = stat('Kata', kata) + stat('Karakter', kar) + stat('Karakter tanpa spasi', karTanpa) +
+                      stat('Kalimat', kalimat) + stat('Paragraf', paragraf) +
+                      `<div class="stat"><span>Waktu baca</span><b style="font-size:1.25rem">${menit}</b></div>`;
+      };
+      i.addEventListener('input', run);
+      run();
+    }
+  },
+
+  /* 6. Generator password */
+  {
+    id: 'password', name: 'Generator password', desc: 'Buat password acak yang kuat. Dibuat di browser, tidak dikirim ke mana pun.',
+    html: `
+      <label for="pw-len">Panjang: <span id="pw-len-v">16</span> karakter</label>
+      <input id="pw-len" type="range" min="4" max="64" value="16">
+      <div class="checks">
+        <label><input type="checkbox" id="pw-up" checked> Huruf besar</label>
+        <label><input type="checkbox" id="pw-lo" checked> Huruf kecil</label>
+        <label><input type="checkbox" id="pw-num" checked> Angka</label>
+        <label><input type="checkbox" id="pw-sym" checked> Simbol</label>
+      </div>
+      <p class="result" id="pw-out" style="word-break:break-all"></p>
+      <div class="actions">
+        <button class="btn" id="pw-gen">Buat ulang</button>
+        <button class="btn ghost" id="pw-copy">Salin</button>
+      </div>`,
+    init(){
+      const len = $('#pw-len'), out = $('#pw-out');
+      const sets = {
+        up: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        lo: 'abcdefghijklmnopqrstuvwxyz',
+        num: '0123456789',
+        sym: '!@#$%^&*()-_=+[]{}?'
+      };
+      const gen = () => {
+        $('#pw-len-v').textContent = len.value;
+        const chosen = Object.keys(sets).filter(k => $('#pw-' + k).checked);
+        if (!chosen.length) { out.textContent = 'Pilih minimal satu jenis karakter.'; return; }
+        const pool = chosen.map(k => sets[k]).join('');
+        let pw = '';
+        for (let n = 0; n < +len.value; n++) pw += pool[randInt(pool.length)];
+        out.textContent = pw;
+      };
+      len.addEventListener('input', gen);
+      document.querySelectorAll('#view input[type="checkbox"]').forEach(c => c.addEventListener('change', gen));
+      $('#pw-gen').addEventListener('click', gen);
+      $('#pw-copy').addEventListener('click', e => copyText(out.textContent, e.target));
+      gen();
+    }
+  },
+
+  /* 7. Pengubah huruf */
+  {
+    id: 'huruf', name: 'Pengubah huruf', desc: 'Ubah kapitalisasi teks dengan sekali klik.',
+    html: `
+      <label for="huruf-in">Teks</label>
+      <textarea id="huruf-in" placeholder="Tulis atau tempel teks..."></textarea>
+      <div class="actions">
+        <button class="btn" data-m="upper">Huruf besar semua</button>
+        <button class="btn" data-m="lower">Huruf kecil semua</button>
+        <button class="btn" data-m="title">Setiap Kata Besar</button>
+        <button class="btn" data-m="sentence">Awal kalimat besar</button>
+        <button class="btn ghost" id="huruf-copy">Salin hasil</button>
+      </div>`,
+    init(){
+      const i = $('#huruf-in');
+      const conv = {
+        upper: t => t.toUpperCase(),
+        lower: t => t.toLowerCase(),
+        title: t => t.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase()),
+        sentence: t => t.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-zà-ÿ])/g, (m, a, b) => a + b.toUpperCase())
+      };
+      document.querySelectorAll('#view [data-m]').forEach(b =>
+        b.addEventListener('click', () => { i.value = conv[b.dataset.m](i.value); i.focus(); }));
+      $('#huruf-copy').addEventListener('click', e => copyText(i.value, e.target));
+    }
+  },
+
+  /* 8. BMI */
+  {
+    id: 'bmi', name: 'Kalkulator BMI', desc: 'Hitung Indeks Massa Tubuh (BMI) dari berat dan tinggi badan. Ini estimasi, bukan diagnosis medis.',
+    html: `
+      <div class="row">
+        <div><label for="bmi-w">Berat badan (kg)</label><input id="bmi-w" type="number" step="0.1" placeholder="contoh: 60"></div>
+        <div><label for="bmi-h">Tinggi badan (cm)</label><input id="bmi-h" type="number" step="0.1" placeholder="contoh: 165"></div>
+      </div>
+      <p class="result" id="bmi-out">—</p>
+      <p class="sub" id="bmi-note"></p>`,
+    init(){
+      const w = $('#bmi-w'), h = $('#bmi-h'), o = $('#bmi-out'), n = $('#bmi-note');
+      const run = () => {
+        const bb = parseFloat(w.value), tb = parseFloat(h.value);
+        if (!(bb > 0 && tb > 0)) { o.textContent = '—'; n.textContent = ''; return; }
+        const bmi = bb / Math.pow(tb / 100, 2);
+        let kat;
+        if (bmi < 18.5) kat = 'Kurus';
+        else if (bmi < 25) kat = 'Normal';
+        else if (bmi < 30) kat = 'Berlebih';
+        else kat = 'Obesitas';
+        o.textContent = `${fmt(bmi.toFixed(1))} — ${kat}`;
+        n.textContent = 'Kategori: kurus < 18,5 · normal 18,5–24,9 · berlebih 25–29,9 · obesitas ≥ 30.';
+      };
+      w.addEventListener('input', run);
+      h.addEventListener('input', run);
+    }
+  },
+
+  /* 9. Diskon */
+  {
+    id: 'diskon', name: 'Hitung diskon', desc: 'Cari harga akhir setelah diskon dan berapa yang dihemat.',
+    html: `
+      <div class="row">
+        <div><label for="dis-h">Harga awal (Rp)</label><input id="dis-h" type="number" min="0" placeholder="contoh: 250000"></div>
+        <div><label for="dis-p">Diskon (%)</label><input id="dis-p" type="number" min="0" max="100" placeholder="contoh: 20"></div>
+      </div>
+      <ul class="list" id="dis-o"></ul>`,
+    init(){
+      const h = $('#dis-h'), p = $('#dis-p'), o = $('#dis-o');
+      const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+      const run = () => {
+        const harga = parseFloat(h.value), pct = parseFloat(p.value);
+        if (isNaN(harga) || isNaN(pct)) { o.innerHTML = '<li>Isi harga dan persen diskon.</li>'; return; }
+        const hemat = harga * pct / 100;
+        o.innerHTML = `
+          <li><span>Potongan</span><strong>${rp(hemat)}</strong></li>
+          <li><span>Harga akhir</span><strong>${rp(harga - hemat)}</strong></li>`;
+      };
+      h.addEventListener('input', run);
+      p.addEventListener('input', run);
+    }
+  },
+
+  /* 10. Hitung umur */
+  {
+    id: 'umur', name: 'Hitung umur', desc: 'Pilih tanggal lahir untuk melihat umur dalam tahun, bulan, dan hari.',
+    html: `
+      <label for="umur-d">Tanggal lahir</label>
+      <input id="umur-d" type="date">
+      <ul class="list" id="umur-o"></ul>`,
+    init(){
+      const d = $('#umur-d'), o = $('#umur-o');
+      d.addEventListener('input', () => {
+        if (!d.value) { o.innerHTML = ''; return; }
+        const b = new Date(d.value + 'T00:00:00'), t = new Date();
+        t.setHours(0, 0, 0, 0);
+        if (b > t) { o.innerHTML = '<li>Tanggal lahir tidak boleh di masa depan.</li>'; return; }
+        let y = t.getFullYear() - b.getFullYear();
+        let m = t.getMonth() - b.getMonth();
+        let dd = t.getDate() - b.getDate();
+        if (dd < 0) { m--; dd += new Date(t.getFullYear(), t.getMonth(), 0).getDate(); }
+        if (m < 0) { y--; m += 12; }
+        const hari = Math.floor((t - b) / 86400000);
+        o.innerHTML = `
+          <li><span>Umur</span><strong>${y} tahun, ${m} bulan, ${dd} hari</strong></li>
+          <li><span>Total hari</span><strong>${fmt(hari)} hari</strong></li>`;
+      });
+    }
+  },
+
+  /* 11. Base64 */
+  {
+    id: 'base64', name: 'Encode & decode Base64', desc: 'Ubah teks ke Base64 atau sebaliknya. Mendukung huruf non-Latin.',
+    html: `
+      <div class="row">
+        <div><label for="b64-m">Mode</label>
+          <select id="b64-m"><option value="enc">Encode (teks ke Base64)</option><option value="dec">Decode (Base64 ke teks)</option></select>
+        </div>
+      </div>
+      <label for="b64-in" style="margin-top:16px">Input</label>
+      <textarea id="b64-in"></textarea>
+      <label for="b64-out" style="margin-top:16px">Hasil</label>
+      <textarea id="b64-out" readonly></textarea>
+      <div class="actions"><button class="btn ghost" id="b64-copy">Salin hasil</button></div>`,
+    init(){
+      const m = $('#b64-m'), i = $('#b64-in'), o = $('#b64-out');
+      const run = () => {
+        const s = i.value;
+        if (!s) { o.value = ''; return; }
+        if (m.value === 'enc') {
+          const bytes = new TextEncoder().encode(s);
+          let bin = '';
+          bytes.forEach(b => bin += String.fromCharCode(b));
+          o.value = btoa(bin);
+        } else {
+          try {
+            const bytes = Uint8Array.from(atob(s.trim()), c => c.charCodeAt(0));
+            o.value = new TextDecoder().decode(bytes);
+          } catch {
+            o.value = 'Input bukan Base64 yang valid.';
+          }
+        }
+      };
+      m.addEventListener('change', run);
+      i.addEventListener('input', run);
+      $('#b64-copy').addEventListener('click', e => copyText(o.value, e.target));
+    }
+  },
+
+  /* 12. Angka acak */
+  {
+    id: 'acak', name: 'Angka acak', desc: 'Acak angka dalam rentang tertentu, misalnya untuk undian atau menentukan giliran.',
+    html: `
+      <div class="row">
+        <div><label for="acak-min">Dari</label><input id="acak-min" type="number" value="1"></div>
+        <div><label for="acak-max">Sampai</label><input id="acak-max" type="number" value="100"></div>
+        <div><label for="acak-n">Jumlah</label><input id="acak-n" type="number" value="1" min="1" max="100"></div>
+      </div>
+      <div class="actions"><button class="btn" id="acak-go">Acak</button></div>
+      <p class="result" id="acak-out">—</p>`,
+    init(){
+      const a = $('#acak-min'), b = $('#acak-max'), n = $('#acak-n'), o = $('#acak-out');
+      const roll = () => {
+        const min = Math.ceil(+a.value), max = Math.floor(+b.value), cnt = Math.min(100, Math.max(1, +n.value | 0));
+        if (isNaN(min) || isNaN(max) || max < min) { o.textContent = 'Rentang tidak valid.'; return; }
+        const hasil = [];
+        for (let k = 0; k < cnt; k++) hasil.push(min + randInt(max - min + 1));
+        o.textContent = hasil.join(', ');
+      };
+      $('#acak-go').addEventListener('click', roll);
+      roll();
+    }
+  },
+
+  /* 13. Pembersih teks */
+  {
+    id: 'bersih', name: 'Pembersih teks', desc: 'Rapikan teks: hapus spasi berlebih, baris kosong, baris duplikat, atau urutkan baris.',
+    html: `
+      <label for="bersih-in">Teks</label>
+      <textarea id="bersih-in" placeholder="Tempel teks yang berantakan di sini..."></textarea>
+      <div class="checks">
+        <label><input type="checkbox" id="bs-sp" checked> Hapus spasi berlebih</label>
+        <label><input type="checkbox" id="bs-kosong" checked> Hapus baris kosong</label>
+        <label><input type="checkbox" id="bs-dup"> Hapus baris duplikat</label>
+        <label><input type="checkbox" id="bs-sort"> Urutkan A-Z</label>
+      </div>
+      <label for="bersih-out" style="margin-top:20px">Hasil</label>
+      <textarea id="bersih-out" readonly></textarea>
+      <div class="actions"><button class="btn ghost" id="bersih-copy">Salin hasil</button></div>`,
+    init(){
+      const i = $('#bersih-in'), o = $('#bersih-out');
+      const run = () => {
+        let lines = i.value.split('\n');
+        if ($('#bs-sp').checked) lines = lines.map(l => l.replace(/[ \t]+/g, ' ').trim());
+        if ($('#bs-kosong').checked) lines = lines.filter(l => l.trim());
+        if ($('#bs-dup').checked) lines = [...new Set(lines)];
+        if ($('#bs-sort').checked) lines = lines.sort((a, b) => a.localeCompare(b, 'id'));
+        o.value = lines.join('\n');
+      };
+      document.querySelectorAll('#view input[type="checkbox"]').forEach(c => c.addEventListener('change', run));
+      i.addEventListener('input', run);
+      $('#bersih-copy').addEventListener('click', e => copyText(o.value, e.target));
+    }
+  },
+
+  /* 14. Timer */
+  {
+    id: 'timer', name: 'Timer', desc: 'Hitung mundur untuk belajar, masak, atau istirahat.',
+    html: `
+      <div class="row">
+        <div><label for="tm-m">Menit</label><input id="tm-m" type="number" min="0" value="5"></div>
+        <div><label for="tm-s">Detik</label><input id="tm-s" type="number" min="0" max="59" value="0"></div>
+      </div>
+      <p class="result" id="tm-d" style="font-size:clamp(3rem,10vw,5rem);font-variant-numeric:tabular-nums">05:00</p>
+      <p class="sub" id="tm-msg"></p>
+      <div class="actions">
+        <button class="btn" id="tm-start">Mulai</button>
+        <button class="btn ghost" id="tm-reset">Atur ulang</button>
+      </div>`,
+    init(){
+      clearInterval(window.__tm);
+      const m = $('#tm-m'), s = $('#tm-s'), d = $('#tm-d'), msg = $('#tm-msg'), st = $('#tm-start');
+      let total = 0, left = 0, running = false;
+      const pad = n => String(n).padStart(2, '0');
+      const show = () => d.textContent = `${pad(Math.floor(left / 60))}:${pad(left % 60)}`;
+      const stop = label => { clearInterval(window.__tm); running = false; st.textContent = label; };
+      const set = () => {
+        total = Math.max(0, (+m.value | 0) * 60 + (+s.value | 0));
+        left = total; msg.textContent = ''; show();
+      };
+      const tick = () => {
+        if (!$('#tm-d')) { clearInterval(window.__tm); return; }
+        if (left > 0) {
+          left--; show();
+          if (left === 0) { stop('Mulai'); msg.textContent = 'Waktu habis!'; }
+        }
+      };
+      st.addEventListener('click', () => {
+        if (running) { stop('Lanjut'); return; }
+        if (left === 0) {
+          if (total === 0) { msg.textContent = 'Atur waktu dulu.'; return; }
+          left = total;
+        }
+        running = true; st.textContent = 'Jeda';
+        clearInterval(window.__tm);
+        window.__tm = setInterval(tick, 1000);
+      });
+      $('#tm-reset').addEventListener('click', () => { stop('Mulai'); set(); });
+      m.addEventListener('input', () => { stop('Mulai'); set(); });
+      s.addEventListener('input', () => { stop('Mulai'); set(); });
+      set();
+    }
+  },
+
+  /* 15. Format JSON */
+  {
+    id: 'json', name: 'Format JSON', desc: 'Rapikan atau kecilkan JSON, sekaligus cek apakah formatnya valid.',
+    html: `
+      <label for="js-in">JSON</label>
+      <textarea id="js-in" placeholder='{"nama": "Budi", "umur": 20}'></textarea>
+      <div class="actions">
+        <button class="btn" id="js-pretty">Rapikan</button>
+        <button class="btn ghost" id="js-min">Kecilkan</button>
+        <button class="btn ghost" id="js-copy">Salin hasil</button>
+      </div>
+      <p class="sub" id="js-err"></p>
+      <label for="js-out" style="margin-top:16px">Hasil</label>
+      <textarea id="js-out" readonly></textarea>`,
+    init(){
+      const i = $('#js-in'), o = $('#js-out'), e = $('#js-err');
+      const go = sp => {
+        if (!i.value.trim()) { o.value = ''; e.textContent = ''; return; }
+        try {
+          o.value = JSON.stringify(JSON.parse(i.value), null, sp);
+          e.textContent = 'JSON valid.';
+        } catch (err) {
+          o.value = '';
+          e.textContent = 'JSON tidak valid: ' + err.message;
+        }
+      };
+      $('#js-pretty').addEventListener('click', () => go(2));
+      $('#js-min').addEventListener('click', () => go(0));
+      $('#js-copy').addEventListener('click', ev => copyText(o.value, ev.target));
+    }
+  },
+
+  /* 16. Generator UUID */
+  {
+    id: 'uuid', name: 'Generator UUID', desc: 'Buat UUID v4 acak, berguna untuk ID unik di database atau kode proyek.',
+    html: `
+      <p class="result" id="uuid-out">—</p>
+      <div class="actions">
+        <button class="btn" id="uuid-gen">Buat UUID baru</button>
+        <button class="btn ghost" id="uuid-copy">Salin</button>
+      </div>`,
+    init(){
+      const o = $('#uuid-out');
+      const make = () => crypto.randomUUID
+        ? crypto.randomUUID()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = randInt(16);
+            return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+          });
+      const gen = () => o.textContent = make();
+      $('#uuid-gen').addEventListener('click', gen);
+      $('#uuid-copy').addEventListener('click', e => copyText(o.textContent, e.target));
+      gen();
+    }
+  },
+
+  /* 17. Konverter warna */
+  {
+    id: 'warna', name: 'Konverter warna', desc: 'Pilih warna, lalu lihat kode HEX, RGB, dan HSL-nya.',
+    html: `
+      <label for="cl-p">Pilih warna</label>
+      <input id="cl-p" type="color" value="#0e6b5c" style="height:52px;padding:4px;width:100px">
+      <div id="cl-prev" style="height:96px;border-radius:12px;margin-top:16px;border:1px solid var(--line)"></div>
+      <ul class="list" id="cl-o"></ul>`,
+    init(){
+      const p = $('#cl-p'), prev = $('#cl-prev'), o = $('#cl-o');
+      const run = () => {
+        const hex = p.value;
+        const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+        const R = r / 255, G = g / 255, B = b / 255;
+        const mx = Math.max(R, G, B), mn = Math.min(R, G, B);
+        let h = 0, s = 0, l = (mx + mn) / 2;
+        if (mx !== mn) {
+          const d = mx - mn;
+          s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+          if (mx === R) h = (G - B) / d + (G < B ? 6 : 0);
+          else if (mx === G) h = (B - R) / d + 2;
+          else h = (R - G) / d + 4;
+          h *= 60;
+        }
+        prev.style.background = hex;
+        o.innerHTML = `
+          <li><span>HEX</span><strong>${hex.toUpperCase()}</strong></li>
+          <li><span>RGB</span><strong>rgb(${r}, ${g}, ${b})</strong></li>
+          <li><span>HSL</span><strong>hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)</strong></li>`;
+      };
+      p.addEventListener('input', run);
+      run();
+    }
+  },
+
+  /* 18. Selisih tanggal */
+  {
+    id: 'selisih', name: 'Selisih tanggal', desc: 'Hitung jumlah hari, minggu, di antara dua tanggal.',
+    html: `
+      <div class="row">
+        <div><label for="sel-a">Tanggal awal</label><input id="sel-a" type="date"></div>
+        <div><label for="sel-b">Tanggal akhir</label><input id="sel-b" type="date"></div>
+      </div>
+      <ul class="list" id="sel-o"></ul>`,
+    init(){
+      const a = $('#sel-a'), b = $('#sel-b'), o = $('#sel-o');
+      const run = () => {
+        if (!a.value || !b.value) { o.innerHTML = '<li>Pilih dua tanggal.</li>'; return; }
+        const d1 = new Date(a.value + 'T00:00:00'), d2 = new Date(b.value + 'T00:00:00');
+        const total = Math.round(Math.abs(d2 - d1) / 86400000);
+        const minggu = Math.floor(total / 7), sisa = total % 7;
+        o.innerHTML = `
+          <li><span>Selisih</span><strong>${fmt(total)} hari</strong></li>
+          <li><span>Dalam minggu</span><strong>${minggu} minggu, ${sisa} hari</strong></li>
+          <li><span>Urutan</span><strong>${d2 >= d1 ? 'Tanggal akhir setelah awal' : 'Tanggal akhir sebelum awal'}</strong></li>`;
+      };
+      a.addEventListener('input', run);
+      b.addEventListener('input', run);
+    }
+  }
+];
+
+/* ---------- proses, loading, realtime ---------- */
+const LOAD_MSGS = ['Loading...', 'Loading anjg....', 'Sabar bentar...', 'Lagi ngolah datanya...', 'Hampir kelar...'];
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const p2 = n => String(n).padStart(2, '0');
+let toastTimer = null;
+function toast(text, ms = 1600, spin = false){
+  const t = $('#toast');
+  t.innerHTML = (spin ? '<i class="spin"></i>' : '') + `<span>${esc(text)}</span>`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function busy(ms = 700){ toast(pick(LOAD_MSGS), ms, true); }
+document.addEventListener('click', e => { if (e.target.closest('.btn')) busy(550); });
+
+const loaderTimer = setInterval(() => { const el = $('#loader-text'); if (el) el.textContent = pick(LOAD_MSGS); }, 650);
+window.addEventListener('load', () => setTimeout(() => {
+  clearInterval(loaderTimer);
+  $('#loader').classList.add('hide');
+}, 1300));
+
+const VID = (() => {
+  try {
+    let v = localStorage.getItem('yusup_vid');
+    if (!v) { v = crypto.randomUUID(); localStorage.setItem('yusup_vid', v); }
+    return v;
+  } catch { return 'anon-' + Math.random().toString(36).slice(2); }
+})();
+let myName = (() => { try { return localStorage.getItem('yusup_name') || ''; } catch { return ''; } })();
+
+const G = { history: [], music: null, stats: null };
+let viewHandler = null;
+let ws = null;
+
+const send = o => {
+  if (ws && ws.readyState === 1) { ws.send(JSON.stringify(o)); return true; }
+  toast('Belum terhubung, coba lagi sebentar');
+  return false;
+};
+function setConn(ok){
+  const el = $('#st-conn');
+  if (el) { el.textContent = ok ? 'Terhubung' : 'Menghubungkan ulang...'; el.dataset.ok = String(ok); }
+}
+function renderStats(){
+  const s = G.stats;
+  if (!s) {
+    ['st-online', 'st-offline', 'st-total', 'st-uptime'].forEach(id => $('#' + id).textContent = '—');
+    return;
+  }
+  $('#st-online').textContent = fmt(s.online);
+  $('#st-offline').textContent = fmt(s.offline);
+  $('#st-total').textContent = fmt(s.total);
+  tickUptime();
+}
+function tickUptime(){
+  const s = G.stats;
+  if (!s || !s.startedAt || !$('#st-uptime')) return;
+  const sec = Math.floor((Date.now() - s.startedAt) / 1000);
+  const d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600);
+  const m = Math.floor(sec % 3600 / 60), x = sec % 60;
+  $('#st-uptime').textContent = `${d} hari ${p2(h)}:${p2(m)}:${p2(x)}`;
+}
+setInterval(tickUptime, 1000);
+
+const audio = $('#gplayer');
+const fmtT = s => (isFinite(s) ? `${Math.floor(s / 60)}:${p2(Math.floor(s % 60))}` : '0:00');
+function refreshMusicUI(){
+  const tog = $('#m-toggle');
+  if (!tog) return;
+  tog.textContent = audio.paused ? 'Putar' : 'Jeda';
+  $('#disc').classList.toggle('on', !audio.paused);
+  $('#m-time').textContent = `${fmtT(audio.currentTime)} / ${fmtT(audio.duration)}`;
+}
+['play', 'pause', 'timeupdate', 'loadedmetadata'].forEach(ev => audio.addEventListener(ev, refreshMusicUI));
+function seekTo(m){
+  const off = (Date.now() - m.startedAt) / 1000;
+  if (off > 0 && isFinite(audio.duration) && off < audio.duration) audio.currentTime = off;
+}
+function applyMusic(m){
+  if (!m || !m.url) return;
+  const t = $('#np-title'), by = $('#np-by');
+  if (t) t.textContent = m.title;
+  if (by) by.textContent = 'Diputar oleh ' + m.by;
+  const key = m.startedAt + m.url;
+  if (audio.dataset.key !== key) {
+    audio.dataset.key = key;
+    audio.src = m.url;
+    audio.onloadedmetadata = () => {
+      seekTo(m);
+      audio.play().catch(() => toast('Tekan Putar untuk mulai'));
+      refreshMusicUI();
+    };
+    audio.load();
+  } else {
+    seekTo(m);
+  }
+}
+
+function connect(){
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  ws = new WebSocket(`${proto}://${location.host}/api/ws`);
+  ws.onopen = () => {
+    setConn(true);
+    ws.send(JSON.stringify({ type: 'join', name: myName || 'Tamu', vid: VID }));
+  };
+  ws.onmessage = e => {
+    let d;
+    try { d = JSON.parse(e.data); } catch { return; }
+    if (d.stats) { G.stats = d.stats; renderStats(); }
+    if (d.type === 'init') {
+      G.history = d.history || [];
+      G.music = d.music || null;
+      if (G.music) applyMusic(G.music);
+    }
+    if (d.type === 'chat') { G.history.push(d); if (G.history.length > 50) G.history.shift(); }
+    if (d.type === 'music') { G.music = d.music; applyMusic(d.music); }
+    if (d.type === 'error') toast(d.text);
+    if (viewHandler) viewHandler(d);
+  };
+  ws.onclose = () => {
+    setConn(false);
+    G.stats = null;
+    renderStats();
+    setTimeout(connect, 2000);
+  };
+}
+
+function initTilt(root){
+  root.querySelectorAll('.tilt, .card').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg)`;
+    });
+    el.addEventListener('mouseleave', () => el.style.transform = '');
+  });
+}
+
+const CUBE = '<div class="scene"><div class="cube"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i><i class="f6"></i></div></div>';
+
+const HOME = {
+  id: 'beranda', name: 'Beranda', desc: 'Selamat datang di YUSUP AI TOOLS. Tools gratis, chat publik, dan music room bareng.',
+  html: `
+    <div class="hero">
+      ${CUBE}
+      <p class="brand-big">YUSUP AI TOOLS</p>
+      <div class="link-cards">
+        <a class="tilt link-card" href="#fancy"><b>Generator teks keren</b><span>20 gaya huruf, tinggal salin</span></a>
+        <a class="tilt link-card" href="#chat"><b>Chat publik</b><span>Ngobrol bareng pengunjung lain</span></a>
+        <a class="tilt link-card" href="#musik"><b>Music room</b><span>Dengerin lagu bareng-bareng</span></a>
+        <a class="tilt link-card" href="#kalkulator"><b>Semua tools</b><span>Kalkulator, konverter, password, dan lainnya</span></a>
+      </div>
+    </div>`,
+  init(){}
+};
+
+const CHAT = {
+  id: 'chat', name: 'Chat publik', desc: 'Ngobrol bareng sesama pengunjung. Semua pesan terlihat publik.',
+  foot: 'Sopan ya. Pesan bisa dilihat semua pengunjung.',
+  html: `
+    <div class="chat-log" id="chat-log" aria-live="polite"></div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-name" maxlength="20" placeholder="Nama kamu">
+      <input id="chat-text" maxlength="300" placeholder="Tulis pesan...">
+      <button class="btn" type="submit">Kirim</button>
+    </form>`,
+  init(){
+    const log = $('#chat-log'), form = $('#chat-form'), nm = $('#chat-name'), tx = $('#chat-text');
+    nm.value = myName;
+    const draw = () => {
+      log.innerHTML = G.history.length
+        ? G.history.map(m => `<div class="msg ${m.name === myName ? 'me' : ''}"><b>${esc(m.name)}</b><span class="when">${new Date(m.t).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span><p>${esc(m.text)}</p></div>`).join('')
+        : '<p class="sub">Belum ada pesan. Jadi yang pertama nyapa!</p>';
+      log.scrollTop = log.scrollHeight;
+    };
+    draw();
+    viewHandler = d => {
+      if (d.type === 'chat' || d.type === 'init') draw();
+    };
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = tx.value.trim();
+      if (!text) return;
+      myName = nm.value.trim() || 'Tamu';
+      try { localStorage.setItem('yusup_name', myName); } catch {}
+      send({ type: 'join', name: myName, vid: VID });
+      if (send({ type: 'chat', text })) tx.value = '';
+    });
+  }
+};
+
+const MUSIK = {
+  id: 'musik', name: 'Music room', desc: 'Satu lagu diputar bareng untuk semua pengunjung. Lagu baru menggantikan yang sedang diputar.',
+  foot: 'Pakai link audio langsung (https, misalnya .mp3). Pastikan kamu punya hak untuk memutar lagu itu.',
+  html: `
+    <div class="now">
+      <div class="disc" id="disc"></div>
+      <div>
+        <small id="np-by">Belum ada lagu</small>
+        <p class="result" id="np-title" style="font-size:1.4rem">—</p>
+      </div>
+    </div>
+    <div class="actions" style="align-items:center;margin-top:0">
+      <button class="btn" id="m-toggle">Putar</button>
+      <input id="m-vol" type="range" min="0" max="1" step="0.05" value="1" style="width:140px" aria-label="Volume">
+      <span class="sub" id="m-time">0:00 / 0:00</span>
+    </div>
+    <form id="music-form" class="stack" style="margin-top:24px" autocomplete="off">
+      <div class="row">
+        <div><label for="m-title">Judul lagu</label><input id="m-title" maxlength="60" placeholder="contoh: Lagu favoritku"></div>
+        <div><label for="m-url">Link audio (https)</label><input id="m-url" placeholder="https://.../lagu.mp3"></div>
+      </div>
+      <div class="actions"><button class="btn" type="submit">Putar di room</button></div>
+    </form>`,
+  init(){
+    $('#m-toggle').addEventListener('click', () => {
+      if (audio.paused) audio.play().catch(() => toast('Browser memblokir putar, tekan lagi'));
+      else audio.pause();
+    });
+    const vol = $('#m-vol');
+    vol.value = audio.volume;
+    vol.addEventListener('input', () => audio.volume = +vol.value);
+    $('#music-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const url = $('#m-url').value.trim();
+      const title = $('#m-title').value.trim();
+      if (!/^https:\/\/\S+$/.test(url)) { toast('Link harus diawali https://'); return; }
+      send({ type: 'music', url, title });
+    });
+    applyMusic(G.music);
+    refreshMusicUI();
+  }
+};
+
+/* ---------- generator project Android (WebView) ---------- */
+const xmlEsc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const javaEsc = s => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+const slugOf = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'app';
+
+function buildAndroidProject({ name, pkg, ver, url, html, offline }){
+  const zip = new JSZip();
+  const root = zip.folder(slugOf(name));
+  const pkgPath = pkg.split('.').join('/');
+  const startUrl = offline ? 'file:///android_asset/index.html' : url;
+
+  root.file('settings.gradle.kts', `pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "${slugOf(name)}"
+include(":app")
+`);
+
+  root.file('build.gradle.kts', `plugins {
+    id("com.android.application") version "8.5.2" apply false
+}
+`);
+
+  root.file('app/build.gradle.kts', `plugins {
+    id("com.android.application")
+}
+
+android {
+    namespace = "${pkg}"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "${pkg}"
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "${javaEsc(ver)}"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+`);
+
+  root.file('app/src/main/AndroidManifest.xml', `<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:label="${xmlEsc(name)}"
+        android:supportsRtl="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+`);
+
+  root.file(`app/src/main/java/${pkgPath}/MainActivity.java`, `package ${pkg};
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+public class MainActivity extends Activity {
+    private WebView web;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        web = new WebView(this);
+        WebSettings s = web.getSettings();
+        s.setJavaScriptEnabled(true);
+        s.setDomStorageEnabled(true);
+        web.setWebViewClient(new WebViewClient());
+        web.loadUrl("${javaEsc(startUrl)}");
+        setContentView(web);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (web.canGoBack()) web.goBack();
+        else super.onBackPressed();
+    }
+}
+`);
+
+  if (offline) root.file('app/src/main/assets/index.html', html);
+
+  root.file('CARA-BUILD.txt', `CARA MEMBUAT APK
+==================
+
+1. Install Android Studio (gratis) dari developer.android.com/studio.
+2. Buka Android Studio, pilih Open, lalu pilih folder "${slugOf(name)}" dari zip ini.
+3. Tunggu proses Gradle Sync selesai. Android Studio akan membuat Gradle wrapper otomatis.
+   Kalau diminta, pakai JDK 17.
+4. Dari menu Build, pilih Build APK(s).
+5. APK ada di: app/build/outputs/apk/debug/app-debug.apk
+6. Pasang APK di HP Android (aktifkan "Install dari sumber tidak dikenal").
+
+Catatan:
+- APK debug bisa langsung dipasang untuk tes.
+- Untuk dibagikan ke Play Store, buat APK/AAB release yang sudah ditandatangani (Build > Generate Signed App Bundle / APK).
+- Mode URL: aplikasi membuka website "${url || '(pakai file HTML di assets)'}". Website harus bisa diakses lewat internet.
+- Mode offline: isi HTML ada di app/src/main/assets/index.html.
+`);
+
+  return zip;
+}
+
+const APK = {
+  id: 'apk', name: 'Build APK', desc: 'Buat project Android (WebView) dari website atau file HTML kamu, lalu download sebagai zip. Buka di Android Studio untuk jadi APK.',
+  foot: 'Zip dibuat di browser kamu. APK dibuat di Android Studio, karena browser tidak bisa mengompilasi APK.',
+  html: `
+    <div class="row">
+      <div><label for="apk-name">Nama aplikasi</label><input id="apk-name" value="YUSUP AI TOOLS" maxlength="30"></div>
+      <div><label for="apk-pkg">Package name</label><input id="apk-pkg" value="com.yusup.aitools" maxlength="100"></div>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div><label for="apk-mode">Sumber isi</label>
+        <select id="apk-mode"><option value="url">Buka website (URL https)</option><option value="html">Bawa file HTML sendiri (offline)</option></select>
+      </div>
+      <div><label for="apk-ver">Versi</label><input id="apk-ver" value="1.0" maxlength="20"></div>
+    </div>
+    <div id="apk-url-wrap" style="margin-top:16px">
+      <label for="apk-url">URL website</label>
+      <input id="apk-url" placeholder="https://yusup-ai-tools.namakamu.workers.dev">
+    </div>
+    <div id="apk-html-wrap" style="margin-top:16px;display:none">
+      <label for="apk-html">Isi HTML</label>
+      <textarea id="apk-html" placeholder="<!DOCTYPE html>..."></textarea>
+    </div>
+    <div class="actions"><button class="btn" id="apk-go">Buat project Android (.zip)</button></div>
+    <p class="sub" id="apk-msg"></p>`,
+  init(){
+    const mode = $('#apk-mode'), uw = $('#apk-url-wrap'), hw = $('#apk-html-wrap'), msg = $('#apk-msg');
+    const sync = () => {
+      const isHtml = mode.value === 'html';
+      uw.style.display = isHtml ? 'none' : '';
+      hw.style.display = isHtml ? '' : 'none';
+    };
+    mode.addEventListener('change', sync);
+    sync();
+
+    $('#apk-go').addEventListener('click', async () => {
+      const name = $('#apk-name').value.trim() || 'App';
+      const pkg = $('#apk-pkg').value.trim();
+      const ver = $('#apk-ver').value.trim() || '1.0';
+      const offline = mode.value === 'html';
+
+      if (!/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$/.test(pkg)) {
+        msg.textContent = 'Package name harus seperti com.nama.app (huruf kecil, tanpa spasi).';
+        return;
+      }
+      let url = '', html = '';
+      if (offline) {
+        html = $('#apk-html').value;
+        if (!html.trim()) { msg.textContent = 'Isi HTML-nya dulu.'; return; }
+      } else {
+        url = $('#apk-url').value.trim();
+        if (!/^https:\/\/\S+$/.test(url)) { msg.textContent = 'URL harus diawali https://'; return; }
+      }
+      if (typeof JSZip === 'undefined') {
+        msg.textContent = 'Library zip belum termuat. Cek koneksi internet lalu refresh halaman.';
+        return;
+      }
+
+      msg.textContent = 'Lagi nyusun project...';
+      const zip = buildAndroidProject({ name, pkg, ver, url, html, offline });
+      const blob = await zip.generateAsync({ type: 'blob' });
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${slugOf(name)}-android.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      msg.textContent = 'Zip siap. Buka isinya di Android Studio, lalu Build APK. Baca CARA-BUILD.txt di dalam zip.';
+    });
+  }
+};
+
+const PANEL = {
+  id: 'panel', name: 'Panel manager', desc: 'Lihat daftar server di panel Pterodactyl kamu pakai Application API key (diawali ptla_).',
+  foot: 'Key hanya dikirim saat tombol ditekan dan tidak disimpan. Pakai key yang kamu buat sendiri.',
+  html: `
+    <div class="row">
+      <div><label for="pn-url">URL panel</label><input id="pn-url" placeholder="https://panel.namakamu.com"></div>
+      <div><label for="pn-key">Application API key</label><input id="pn-key" type="password" placeholder="ptla_..." autocomplete="off"></div>
+    </div>
+    <div class="actions"><button class="btn" id="pn-load">Ambil daftar server</button></div>
+    <p class="sub" id="pn-msg"></p>
+    <ul class="list" id="pn-list"></ul>
+    <div style="margin-top:32px;border-top:1px solid var(--line);padding-top:20px">
+      <p class="sub" style="margin:0 0 12px">Buat subdomain (khusus owner)</p>
+      <div class="row">
+        <div><label for="sd-key">Owner key</label><input id="sd-key" type="password" autocomplete="off"></div>
+        <div><label for="sd-label">Nama subdomain</label><input id="sd-label" placeholder="contoh: panel1"></div>
+        <div><label for="sd-ip">IP VPS</label><input id="sd-ip" placeholder="1.2.3.4"></div>
+      </div>
+      <div class="actions"><button class="btn ghost" id="sd-go">Buat subdomain</button></div>
+      <p class="sub" id="sd-msg"></p>
+    </div>`,
+  init(){
+    const msg = $('#pn-msg'), list = $('#pn-list');
+    $('#pn-load').addEventListener('click', async () => {
+      msg.textContent = '';
+      list.innerHTML = '';
+      try {
+        const res = await fetch('/api/panel/servers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ panelUrl: $('#pn-url').value, apiKey: $('#pn-key').value }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) { msg.textContent = data.error || 'Gagal mengambil data.'; return; }
+        if (!data.servers.length) { msg.textContent = 'Belum ada server di panel ini.'; return; }
+        list.innerHTML = data.servers.map(s =>
+          `<li><span>${esc(s.name)} (#${esc(s.id)})</span><strong>${s.suspended ? 'Suspended' : 'Aktif'}</strong></li>`
+        ).join('');
+        msg.textContent = `${data.servers.length} server ditemukan.`;
+      } catch {
+        msg.textContent = 'Gagal terhubung ke server. Coba lagi.';
+      }
+    });
+
+    $('#sd-go').addEventListener('click', async () => {
+      const sdMsg = $('#sd-msg');
+      sdMsg.textContent = '';
+      try {
+        const res = await fetch('/api/subdomain', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Owner-Key': $('#sd-key').value },
+          body: JSON.stringify({ label: $('#sd-label').value, ip: $('#sd-ip').value }),
+        });
+        const data = await res.json().catch(() => ({}));
+        sdMsg.textContent = res.ok ? `Subdomain dibuat: ${data.name}` : (data.error || 'Gagal membuat subdomain.');
+      } catch {
+        sdMsg.textContent = 'Gagal terhubung ke server. Coba lagi.';
+      }
+    });
+  }
+};
+
+tools.unshift(HOME);
+tools.push(CHAT, MUSIK, APK, PANEL);
+
+connect();
+
+/* ---------- navigasi ---------- */
+const nav = $('#nav'), view = $('#view');
+nav.innerHTML = tools.map(t => `<button data-id="${t.id}">${esc(t.name)}</button>`).join('');
+
+function openTool(id){
+  const t = tools.find(x => x.id === id) || tools[0];
+  nav.querySelectorAll('button').forEach(b => b.setAttribute('aria-current', String(b.dataset.id === t.id)));
+  view.innerHTML = `
+    <h1>${esc(t.name)}</h1>
+    <p class="desc">${esc(t.desc)}</p>
+    <section class="card">${t.html}</section>
+    <p class="foot">${esc(t.foot || 'Semua proses berjalan di browser kamu. Data tidak disimpan atau dikirim ke server.')}</p>`;
+  viewHandler = null;
+  t.init();
+  initTilt(view);
+  busy(450);
+  document.title = t.name + ' — YUSUP AI TOOLS';
+  history.replaceState(null, '', '#' + t.id);
+}
+
+nav.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (b) openTool(b.dataset.id);
+});
+window.addEventListener('hashchange', () => openTool(location.hash.slice(1)));
+openTool(location.hash.slice(1));
+</script>
+</body>
+</html>
